@@ -1,0 +1,10 @@
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}URL Generated{% endblock %}
+{% block content %}
+<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md text-center">
+    <h2 class="text-xl font-semibold mb-4">URL Generated Successfully!</h2>
+    <p class="mb-4">Your dynamic page has been created. You can access it using the link below:</p>
+    <a href="{% url 'url_geapp:dynamic_page' page.slug %}"
+       class="text-blue-600 underline hover:text-blue-800">
+        {{ request.get_host }}{% url 'url_geapp:dynamic_page' page.slug %}
+    </a>
+    <p class="mt-4">
+        <a href="{% url 'url_geapp:home' %}" class="text-blue-600 hover:text-blue-800">Create Another Page</a>
+    </p>
+</div>
+{% endblock %}
