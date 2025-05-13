@@ -1,21 +1,35 @@
 {% extends 'base.html' %}
 {% block title %}Dynamic Page - {{ page.name }}{% endblock %}
 {% block content %}
-  <style>
+<style>
     footer {
-  width: 100%;
-  background-color: #f8f9fa;
-  text-align: center;
-  position: relative;
-  bottom: 0;
-}
-    </style>
-<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-    <h2 class="text-2xl font-semibold mb-4">{{ page.name }}</h2>
-    <p class="mb-4"><strong>Description:</strong> {{ page.description }}</p>
-    <p class="mb-4"><strong>Keywords:</strong> {{ page.keywords }}</p>
-    <p class="mb-4"><strong>Created At:</strong> {{ page.created_at|date:"F d, Y H:i" }}</p>
-    
+        width: 100%;
+        background-color: #f8f9fa;
+        text-align: center;
+        position: relative;
+        bottom: 0;
+    }
+    .details-container {
+        transition: all 0.3s ease; /* Smooth transition for height, opacity, and padding */
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+        padding: 0 1rem;
+    }
+    .details-container.visible {
+        opacity: 1;
+        height: auto;
+        padding: 1rem;
+    }
+</style>
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md" style="max-width: 120rem;">
+    <button id="toggle-details" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 mb-4">See Details</button>
+    <div id="details" class="details-container">
+        <h2 class="text-2xl font-semibold mb-4">{{ page.name }}</h2>
+        <p class="mb-4"><strong>Description:</strong> {{ page.description }}</p>
+        <p class="mb-4"><strong>Keywords:</strong> {{ page.keywords }}</p>
+        <p class="mb-4"><strong>Created At:</strong> {{ page.created_at|date:"F d, Y H:i" }}</p>
+    </div>
     <!-- Chat Interface -->
     <div class="mt-6">
         <h3 class="text-xl font-semibold mb-4">Chat with AI Agent</h3>
@@ -38,11 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
     const chatContainer = document.getElementById('chat-container');
+    const toggleButton = document.getElementById('toggle-details');
+    const detailsContainer = document.getElementById('details');
 
     // Function to add a message to the chat container
     function addMessage(content, isUser) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = `p-2 my-2 rounded-lg ${isUser ? 'bg-blue-100 ml-auto max-w-xs' : 'bg-gray-200 max-w-xs'}`;
+        messageDiv.className = `p-2 my-2 rounded-lg ${isUser ? 'bg-blue-100 ml-auto max-w-xs' : 'bg-gray-200 max-w-xl'}`;
         messageDiv.innerHTML = content.replace(/\n/g, '<br>'); // Preserve line breaks
         chatContainer.appendChild(messageDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom
@@ -77,6 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             addMessage('Error: Failed to connect to server', false);
         }
+    });
+
+    // Toggle details visibility
+    toggleButton.addEventListener('click', () => {
+        const isVisible = detailsContainer.classList.contains('visible');
+        detailsContainer.classList.toggle('visible');
+        toggleButton.textContent = isVisible ? 'See Details' : 'Hide Details';
     });
 });
 </script>
