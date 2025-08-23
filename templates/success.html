@@ -1,15 +1,49 @@
 {% extends 'base.html' %}
 {% block title %}URL Generated{% endblock %}
 {% block content %}
-<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md text-center">
-    <h2 class="text-xl font-semibold mb-4">URL Generated Successfully!</h2>
-    <p class="mb-4">Your dynamic page has been created. You can access it using the link below:</p>
+<div class="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-xl text-center mt-12 mb-12">
+    <div class="flex flex-col items-center mb-6">
+        <svg class="w-16 h-16 text-green-500 mb-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 12l2 2l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h2 class="text-2xl font-bold mb-2 text-green-700">URL Generated Successfully!</h2>
+    </div>
+    <p class="mb-6 text-gray-700">Your dynamic page has been created. You can access it using the link below:</p>
+    <div class="flex items-center justify-center mb-6">
+        <input
+            id="generated-url"
+            type="text"
+            readonly
+            value="{{ request.get_host }}{% url 'url_geapp:dynamic_page' page.slug %}"
+            class="w-full border border-gray-300 rounded-l-lg px-3 py-2 text-gray-800 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+        <button
+            onclick="copyUrl()"
+            class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 transition"
+            title="Copy URL"
+        >Copy</button>
+    </div>
     <a href="{% url 'url_geapp:dynamic_page' page.slug %}"
-       class="text-blue-600 underline hover:text-blue-800">
-        {{ request.get_host }}{% url 'url_geapp:dynamic_page' page.slug %}
+       class="inline-block bg-green-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-green-700 transition mb-4"
+       target="_blank"
+    >
+        Visit Your Page
     </a>
-    <p class="mt-4">
-        <a href="{% url 'url_geapp:home' %}" class="text-blue-600 hover:text-blue-800">Create Another Page</a>
+    <p class="mt-6">
+        <a href="{% url 'url_geapp:home' %}" class="text-blue-600 hover:text-blue-800 font-semibold transition">Create Another Page</a>
     </p>
 </div>
+<script>
+function copyUrl() {
+    const urlInput = document.getElementById('generated-url');
+    urlInput.select();
+    urlInput.setSelectionRange(0, 99999); // For mobile devices
+    document.execCommand('copy');
+    // Optional: show feedback
+    const btn = event.target;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
+}
+</script>
 {% endblock %}
