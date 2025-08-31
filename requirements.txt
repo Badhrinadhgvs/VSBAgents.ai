@@ -2,3 +2,4 @@ python
 django
 phidata
 groq
+gunicorn
